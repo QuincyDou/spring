@@ -17,12 +17,16 @@
     <context:component-scan base-package="org.doukang.springmaven.dao"/>
     <context:component-scan base-package="org.doukang.springmaven.service"/>
     
+    <bean class="org.doukang.springmaven.config.EncryptPropertyPlaceholderConfigurer"
+        p:location="classpath:jdbc.properties"
+        p:fileEncoding="utf-8"/>
+    
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
         destroy-method="close"
-        p:driverClassName="com.mysql.jdbc.Driver"
-        p:url="jdbc:mysql://localhost:3306/spring"
-        p:username="root"
-        p:password="mihua"/>
+        p:driverClassName="${driverClassName}"
+        p:url="${url}"
+        p:username="${username}"
+        p:password="${password}"/>
     
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"
         p:dataSource-ref="dataSource"/>
