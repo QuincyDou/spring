@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="waiter" class="org.doukang.springtest.aop.advisor.Waiter"/>
+    <bean id="seller" class="org.doukang.springtest.aop.advisor.Seller"/>
+    <bean id="beforeAdvice" class="org.doukang.springtest.aop.advice.GreetingBeforeAdvice"/>
+    <!-- <bean id="greetAdvisor" class="org.doukang.springtest.aop.advisor.GreetingAdvisor"
+        p:advice-ref="beforeAdvice"/> -->
+    <bean id="regexpAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor"
+        p:advice-ref="beforeAdvice"
+        p:patterns=".*Waiter\.greet.*"/>
+    <!-- <bean id="parent" abstract="true" class="org.springframework.aop.framework.ProxyFactoryBean"
+        p:interceptorNames="introduceAdvisor"
+        p:proxyTargetClass="true"/>
+    <bean id="waiterProxy" parent="parent" p:target-ref="waiter"/>
+    <bean id="sellerProxy" parent="parent" p:target-ref="seller"/>
+
+    <bean id="greetPointCut" class="org.doukang.springtest.aop.advisor.GreetingDynamicPointcut"/>
+    <bean id="dynamicAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor"
+        p:pointcut-ref="greetPointCut"
+        p:advice-ref="beforeAdvice"/>
+
+    <bean id="controlFlowPointcut" class="org.springframework.aop.support.ControlFlowPointcut">
+        <constructor-arg type="java.lang.Class"
+            value="org.doukang.springtest.aop.advisor.WaiterDelegate"/>
+        <constructor-arg type="java.lang.String" value="service"/>
+    </bean>
+    <bean id="controlFlowAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor"
+        p:pointcut-ref="controlFlowPointcut"
+        p:advice-ref="beforeAdvice"/>
+
+    <bean id="gcp" class="org.doukang.springtest.aop.advisor.GreetingComposablePointcut"/>
+    <bean id="composableAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor"
+        p:pointcut="#{gcp.intersectionPointcut}"
+        p:advice-ref="beforeAdvice"/>
+
+    <bean id="introduceAdvisor" class="org.springframework.aop.support.DefaultIntroductionAdvisor">
+        <constructor-arg>
+            <bean class="org.doukang.springtest.aop.advice.ControllablePerformanceMonitor"/>
+        </constructor-arg>
+    </bean>
+    <bean id="forumService" class="org.doukang.springtest.aop.ForumServiceImpl"/>
+    <bean id="forumProxy" parent="parent" p:target-ref="forumService"/>
+
+    <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator"
+        p:beanNames="*er"
+        p:interceptorNames="beforeAdvice"
+        p:optimize="true"/> -->
+
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"/>
+
+</beans>
