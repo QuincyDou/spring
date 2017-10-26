@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 读取数据库连接配置文件，自定义解密 -->
+    <bean class="com.quincy.spring.config.EncryptPropertyPlaceholderConfigurer"
+          p:location="classpath:jdbc.properties"
+          p:fileEncoding="utf-8"/>
+
+    <!-- 配置连接池属性 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close"
+          p:driverClassName="${driverClassName}"
+          p:url="${url}"
+          p:username="${username}"
+          p:password="${password}"/>
+
+    <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <!--配置mybatis全局配置文件:mybatis-config.xml-->
+        <!--<property name="configLocation" value="classpath:mybatis-config.xml"/>-->
+        <!--扫描entity包,使用别名,多个用;隔开-->
+        <!--<property name="typeAliasesPackage" value="com.quincy.spring.domain"/>-->
+        <!-- 自动扫描mapping.xml文件 -->
+        <property name="mapperLocations" value="classpath:com/quincy/spring/mapper/xml/*.xml"/>
+    </bean>
+
+    <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.quincy.spring.mapper" />
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+
+</beans>
